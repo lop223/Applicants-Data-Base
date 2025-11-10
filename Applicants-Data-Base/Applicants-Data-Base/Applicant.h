@@ -8,7 +8,9 @@
 class Applicant {
 public:
 	Applicant();
-	~Applicant();
+    Applicant(const std::string& name, const std::string& passport,
+              int age, const std::vector<int>& score, bool contractBasics);
+    ~Applicant();
 
 	const std::string& getName() const { return name; }
 	const std::string& getPassport() const { return passport; }

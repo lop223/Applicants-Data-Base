@@ -1,5 +1,36 @@
 ﻿#include "ApplicantManager.h"
 
+void ApplicantManager::addApplicant(const Applicant& applicant) {
+    applicants.push_back(applicant);
+}
+
+void ApplicantManager::addApplicantProcess() {
+    std::string name, passport;
+    int age;
+    int nScores;
+    bool contract;
+
+    std::cout << "Введіть ім'я: ";
+    std::getline(std::cin >> std::ws, name);
+    std::cout << "Введіть паспорт: ";
+    std::getline(std::cin >> std::ws, passport);
+    std::cout << "Введіть вік: ";
+    std::cin >> age;
+    std::cout << "Кількість оцінок: ";
+    std::cin >> nScores;
+
+    std::vector<int> scores(nScores);
+    std::cout << "Введіть оцінки через пробіл: ";
+    for (int& s : scores) std::cin >> s;
+
+    std::cout << "Контрактна основа (1 — так, 0 — ні): ";
+    std::cin >> contract;
+
+    Applicant a = new Applicant(name, passport, age, score, contract)
+    addApplicant(a);
+    std::cout << "Абітурієнт доданий (поки без збереження в об’єкт)\n";
+}
+
 void ApplicantManager::removeApplicantByName(const std::string& name) {
     auto it = std::remove_if(applicants.begin(), applicants.end(),
         [&](const Applicant& a) { return a.getName() == name; });
