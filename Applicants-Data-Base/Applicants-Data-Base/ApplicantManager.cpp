@@ -1,5 +1,13 @@
 ﻿#include "ApplicantManager.h"
 
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <algorithm>
+#include <numeric>
+
+const std::string FILE_NAME = "applicants.txt";
+
 void ApplicantManager::addApplicant(const Applicant& applicant) {
     applicants.push_back(applicant);
 }
@@ -65,5 +73,66 @@ void ApplicantManager::removeApplicantProcess() {
     }
     else {
         std::cout << "Невірний вибір.\n";
+    }
+}
+
+void ApplicantManager::saveToFile() {
+    std::ofstream file(FILE_NAME);
+    if (!file.is_open()) {
+        std::cerr << "Не вдалося відкрити файл для запису!\n";
+        return;
+    }
+
+    for (const auto& a : applicants) {
+        file << a.getName() << ';'
+            << a.getPassport() << ';'
+            << a.getAge() << ';';
+        for (int s : a.getScore()) file << s << ',';
+        file << ';' << a.isContractBasics() << '\n';
+    }
+    std::cout << "Дані збережено у файл " << FILE_NAME << "\n";
+}
+
+void ApplicantManager::loadFromFile() {
+    std::ifstream file(FILE_NAME);
+    if (!file.is_open()) {
+        std::cerr << "Не вдалося відкрити файл для читання!\n";
+        return;
+    }
+
+    applicants.clear();
+    std::string line;
+    while (std::getline(file, line)) {
+    if (line.empty()) continue; // пропустити порожні рядки
+
+    std::stringstream ss(line);
+    std::string name, passport, ageStr, scoreStr, contractStr;
+
+    std::getline(ss, name, ';');
+    std::getline(ss, passport, ';');
+    std::getline(ss, ageStr, ';');
+    std::getline(ss, scoreStr, ';');
+    std::getline(ss, contractStr, ';');
+
+    int age = std::stoi(ageStr);
+    bool contract = (contractStr == "1" || contractStr == "true");
+
+    std::vector<int> scores;
+    std::stringstream scoreStream(scoreStr);
+    std::string scoreVal;
+    while (std::getline(scoreStream, scoreVal, ',')) {
+        if (!scoreVal.empty())
+            scores.push_back(std::stoi(scoreVal));
+    }
+
+    applicants.push_back({ name, passport, age, scores, contract });
+}
+
+    std::cout << "Дані завантажено з файлу " << FILE_NAME << "\n";
+}
+
+void ApplicantManager::printAll() const {
+    for (const auto& a : applicants) {
+        std::cout << a.toString() << "\n";
     }
 }

@@ -22,8 +22,8 @@ private:
 
     void addApplicant(const Applicant& applicant);
 
-    bool removeApplicantByName(const std::string& name);
-    bool removeApplicantByPassport(const std::string& passport);
+    void removeApplicantByName(const std::string& name);
+    void removeApplicantByPassport(const std::string& passport);
 
     void sortByName();
     void sortByTotalScore();

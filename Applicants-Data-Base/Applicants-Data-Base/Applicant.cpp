@@ -19,7 +19,6 @@ Applicant::Applicant(const Applicant& other)
     std::cout << "[Copy] Applicant: " << name << "\n";
 }
 
-// ?? Конструктор переміщення
 Applicant::Applicant(Applicant&& other) noexcept
     : name(std::move(other.name)),
     passport(std::move(other.passport)),
@@ -27,7 +26,6 @@ Applicant::Applicant(Applicant&& other) noexcept
     score(std::move(other.score)),
     contractBasics(other.contractBasics) {
     std::cout << "[Move] Applicant: " << name << "\n";
-    // Можна очистити інші поля (не обов’язково)
     other.age = 0;
     other.contractBasics = false;
 }

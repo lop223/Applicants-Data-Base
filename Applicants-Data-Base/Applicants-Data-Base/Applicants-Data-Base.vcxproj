@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Applicant.cpp" />
     <ClCompile Include="ApplicantManager.cpp" />
     <ClCompile Include="Applicants-Data-Base.cpp" />
   </ItemGroup>
