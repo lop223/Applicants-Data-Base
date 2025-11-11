@@ -103,7 +103,7 @@ void ApplicantManager::loadFromFile() {
     applicants.clear();
     std::string line;
     while (std::getline(file, line)) {
-    if (line.empty()) continue; // пропустити порожні рядки
+    if (line.empty()) continue;
 
     std::stringstream ss(line);
     std::string name, passport, ageStr, scoreStr, contractStr;
@@ -129,6 +129,22 @@ void ApplicantManager::loadFromFile() {
 }
 
     std::cout << "Дані завантажено з файлу " << FILE_NAME << "\n";
+}
+
+void ApplicantManager::sortByName() {
+    std::sort(applicants.begin(), applicants.end(),
+        [](const Applicant& a, const Applicant& b) {
+            return a.getName() < b.getName();
+        });
+}
+
+void ApplicantManager::sortByTotalScore() {
+    std::sort(applicants.begin(), applicants.end(),
+        [](const Applicant& a, const Applicant& b) {
+            int sumA = std::accumulate(a.getScore().begin(), a.getScore().end(), 0);
+            int sumB = std::accumulate(b.getScore().begin(), b.getScore().end(), 0);
+            return sumA > sumB; 
+        });
 }
 
 void ApplicantManager::printAll() const {
