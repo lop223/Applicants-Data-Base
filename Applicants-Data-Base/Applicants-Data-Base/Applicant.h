@@ -20,7 +20,7 @@ public:
 	const std::vector<int>& getScore() const { return score; }
 	bool isContractBasics() const { return contractBasics; }
 
-	std::string toString();
+	std::string toString() const;
 private:
 	std::string name;
 	std::string passport;

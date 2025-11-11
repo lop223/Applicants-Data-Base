@@ -148,7 +148,7 @@ void ApplicantManager::sortByTotalScore() {
 }
 
 void ApplicantManager::printAll() const {
-    for (const auto& a : applicants) {
+    for (const Applicant& a : applicants) {
         std::cout << a.toString() << "\n";
     }
 }
