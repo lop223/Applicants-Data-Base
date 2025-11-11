@@ -10,6 +10,8 @@ public:
 	Applicant();
     Applicant(const std::string& name, const std::string& passport,
               int age, const std::vector<int>& score, bool contractBasics);
+	Applicant(const Applicant& other);
+	Applicant(Applicant&& other) noexcept;
     ~Applicant();
 
 	const std::string& getName() const { return name; }

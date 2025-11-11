@@ -1,5 +1,13 @@
 ﻿#include "ApplicantManager.h"
 
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <algorithm>
+#include <numeric>
+
+const std::string FILE_NAME = "applicants.txt";
+
 void ApplicantManager::addApplicant(const Applicant& applicant) {
     applicants.push_back(applicant);
 }
@@ -26,8 +34,7 @@ void ApplicantManager::addApplicantProcess() {
     std::cout << "Контрактна основа (1 — так, 0 — ні): ";
     std::cin >> contract;
 
-    Applicant a = new Applicant(name, passport, age, score, contract)
-    addApplicant(a);
+    addApplicant(Applicant(name, passport, age, scores, contract));
     std::cout << "Абітурієнт доданий (поки без збереження в об’єкт)\n";
 }
 
@@ -36,9 +43,7 @@ void ApplicantManager::removeApplicantByName(const std::string& name) {
         [&](const Applicant& a) { return a.getName() == name; });
     if (it != applicants.end()) {
         applicants.erase(it, applicants.end());
-        return true;
     }
-    return false;
 }
 
 void ApplicantManager::removeApplicantByPassport(const std::string& passport) {
@@ -46,9 +51,7 @@ void ApplicantManager::removeApplicantByPassport(const std::string& passport) {
         [&](const Applicant& a) { return a.getPassport() == passport; });
     if (it != applicants.end()) {
         applicants.erase(it, applicants.end());
-        return true;
     }
-    return false;
 }
 
 void ApplicantManager::removeApplicantProcess() {
@@ -60,21 +63,76 @@ void ApplicantManager::removeApplicantProcess() {
         std::string name;
         std::cout << "Введіть ім'я: ";
         std::getline(std::cin >> std::ws, name);
-        if (removeApplicantByName(name))
-            std::cout << "✅ Видалено.\n";
-        else
-            std::cout << "❌ Не знайдено.\n";
+        removeApplicantByName(name);
     }
     else if (choice == 2) {
         std::string passport;
         std::cout << "Введіть паспорт: ";
         std::getline(std::cin >> std::ws, passport);
-        if (removeApplicantByPassport(passport))
-            std::cout << "✅ Видалено.\n";
-        else
-            std::cout << "❌ Не знайдено.\n";
+        removeApplicantByPassport(passport);
     }
     else {
         std::cout << "Невірний вибір.\n";
+    }
+}
+
+void ApplicantManager::saveToFile() {
+    std::ofstream file(FILE_NAME);
+    if (!file.is_open()) {
+        std::cerr << "Не вдалося відкрити файл для запису!\n";
+        return;
+    }
+
+    for (const auto& a : applicants) {
+        file << a.getName() << ';'
+            << a.getPassport() << ';'
+            << a.getAge() << ';';
+        for (int s : a.getScore()) file << s << ',';
+        file << ';' << a.isContractBasics() << '\n';
+    }
+    std::cout << "Дані збережено у файл " << FILE_NAME << "\n";
+}
+
+void ApplicantManager::loadFromFile() {
+    std::ifstream file(FILE_NAME);
+    if (!file.is_open()) {
+        std::cerr << "Не вдалося відкрити файл для читання!\n";
+        return;
+    }
+
+    applicants.clear();
+    std::string line;
+    while (std::getline(file, line)) {
+    if (line.empty()) continue; // пропустити порожні рядки
+
+    std::stringstream ss(line);
+    std::string name, passport, ageStr, scoreStr, contractStr;
+
+    std::getline(ss, name, ';');
+    std::getline(ss, passport, ';');
+    std::getline(ss, ageStr, ';');
+    std::getline(ss, scoreStr, ';');
+    std::getline(ss, contractStr, ';');
+
+    int age = std::stoi(ageStr);
+    bool contract = (contractStr == "1" || contractStr == "true");
+
+    std::vector<int> scores;
+    std::stringstream scoreStream(scoreStr);
+    std::string scoreVal;
+    while (std::getline(scoreStream, scoreVal, ',')) {
+        if (!scoreVal.empty())
+            scores.push_back(std::stoi(scoreVal));
+    }
+
+    applicants.push_back({ name, passport, age, scores, contract });
+}
+
+    std::cout << "Дані завантажено з файлу " << FILE_NAME << "\n";
+}
+
+void ApplicantManager::printAll() const {
+    for (const auto& a : applicants) {
+        std::cout << a.toString() << "\n";
     }
 }
