@@ -123,7 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ApplicantManager.cpp" />
     <ClCompile Include="Applicants-Data-Base.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Applicant.h" />
+    <ClInclude Include="ApplicantManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

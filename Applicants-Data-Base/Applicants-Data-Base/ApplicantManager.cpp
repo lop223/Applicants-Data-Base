@@ -26,8 +26,7 @@ void ApplicantManager::addApplicantProcess() {
     std::cout << "Контрактна основа (1 — так, 0 — ні): ";
     std::cin >> contract;
 
-    Applicant a = new Applicant(name, passport, age, score, contract)
-    addApplicant(a);
+    addApplicant(Applicant(name, passport, age, scores, contract));
     std::cout << "Абітурієнт доданий (поки без збереження в об’єкт)\n";
 }
 
@@ -36,9 +35,7 @@ void ApplicantManager::removeApplicantByName(const std::string& name) {
         [&](const Applicant& a) { return a.getName() == name; });
     if (it != applicants.end()) {
         applicants.erase(it, applicants.end());
-        return true;
     }
-    return false;
 }
 
 void ApplicantManager::removeApplicantByPassport(const std::string& passport) {
@@ -46,9 +43,7 @@ void ApplicantManager::removeApplicantByPassport(const std::string& passport) {
         [&](const Applicant& a) { return a.getPassport() == passport; });
     if (it != applicants.end()) {
         applicants.erase(it, applicants.end());
-        return true;
     }
-    return false;
 }
 
 void ApplicantManager::removeApplicantProcess() {
@@ -60,19 +55,13 @@ void ApplicantManager::removeApplicantProcess() {
         std::string name;
         std::cout << "Введіть ім'я: ";
         std::getline(std::cin >> std::ws, name);
-        if (removeApplicantByName(name))
-            std::cout << "✅ Видалено.\n";
-        else
-            std::cout << "❌ Не знайдено.\n";
+        removeApplicantByName(name);
     }
     else if (choice == 2) {
         std::string passport;
         std::cout << "Введіть паспорт: ";
         std::getline(std::cin >> std::ws, passport);
-        if (removeApplicantByPassport(passport))
-            std::cout << "✅ Видалено.\n";
-        else
-            std::cout << "❌ Не знайдено.\n";
+        removeApplicantByPassport(passport);
     }
     else {
         std::cout << "Невірний вибір.\n";
