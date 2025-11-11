@@ -131,8 +131,15 @@ void ApplicantManager::loadFromFile() {
     std::cout << "Дані завантажено з файлу " << FILE_NAME << "\n";
 }
 
+void ApplicantManager::sortByName() {
+    std::sort(applicants.begin(), applicants.end(),
+        [](const Applicant& a, const Applicant& b) {
+            return a.getName() < b.getName();
+        });
+}
+
 void ApplicantManager::printAll() const {
-    for (const auto& a : applicants) {
+    for (const Applicant& a : applicants) {
         std::cout << a.toString() << "\n";
     }
 }

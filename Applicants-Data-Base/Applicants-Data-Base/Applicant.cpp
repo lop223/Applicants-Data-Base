@@ -31,3 +31,10 @@ Applicant::Applicant(Applicant&& other) noexcept
 }
 
 Applicant::~Applicant() {}
+
+std::string Applicant::toString() const {
+    std::string contractStr = contractBasics ? "Контракт" : "Бюджет";
+    return name + " | Вік: " + std::to_string(age) +
+        " | Паспорт: " + passport +
+        " | Форма навчання: " + contractStr;
+}
